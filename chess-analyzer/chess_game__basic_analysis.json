@@ -1,0 +1,155 @@
+{
+  "name": "chess game  basic analysis",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chess-analyzer",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "3e52a9ad-2015-4d9a-b67b-d217153793c6",
+      "name": "Webhook",
+      "webhookId": "d86fafc1-8e6e-4e06-b3a9-3499e50b5b16"
+    },
+    {
+      "parameters": {
+        "url": "= https://lichess.org/api/games/user/mahendra0001?max=10&pgnInJson=true&evals=true\n",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer lip_Va3JKMQgxpJFkcJqT1pC"
+            }
+          ]
+        },
+        "options": {
+          "lowercaseHeaders": false
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        0
+      ],
+      "id": "56ce49c9-d5dd-46da-bfce-4f3ec43cd47e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are a chess coach. Your task is to analyze engine evaluation and write human-friendly, beginner-level chess reports",
+              "role": "system"
+            },
+            {
+              "content": "=Based on this evaluation data:\n\n1. Identify where the mistakes or blunders happened during the game.\n2. Highlight any missed winning opportunities or critical turning points.\n3. Explain how the advantage shifted between White and Black.\n4. Provide simple coaching advice for improvement, suitable for a beginner.\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        660,
+        -20
+      ],
+      "id": "a7e71d5c-bb56-4986-85b9-829737c9e836",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "4LSrv03HLInuxyl0",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "mahendranadhjujapu1@gmail.com",
+        "subject": "Analysis",
+        "emailType": "text",
+        "message": "={{ $json.message.content }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1020,
+        -20
+      ],
+      "id": "e51634e6-967b-48cc-b44d-54d0cc57f4ad",
+      "name": "Gmail",
+      "webhookId": "39f76d09-1002-41c0-95d1-45c4439fe1b4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "6Y5lA2BXfemL6MAm",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e7b18400-c20a-433d-b473-bd3efc0c48b5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "80624afd73effa027a318b39388193511d90d538d40cabfc3fd16d35424a0522"
+  },
+  "id": "OVlLFxQjLBWu7hHO",
+  "tags": []
+}
