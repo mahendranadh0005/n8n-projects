@@ -68,7 +68,8 @@ Once you've imported the workflow, update your credentials inside n8n:
 
 After these updates, your workflow will be fully functional and ready to process chess positions automatically
 
-Limitations
+Limitations:
+
 The Lichess API only provides detailed analysis (evals, blunders, mistakes) after computer analysis is performed on the game.
 
 The workflow requires that users manually request computer analysis on Lichess before running this automation.
