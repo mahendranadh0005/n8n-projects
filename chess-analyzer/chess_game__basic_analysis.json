@@ -25,7 +25,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer lip_Va3JKMQgxpJFkcJqT1pC"
+              "value": "Bearer api  token "
             }
           ]
         },
